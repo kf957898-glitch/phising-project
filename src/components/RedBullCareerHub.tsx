@@ -13,7 +13,7 @@ const RedBullCareerHub = () => {
   const router = useRouter();
 
   // Energy particle system
-  const [particles, setParticles] = useState<any[]>([]);
+  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; size: number; speed: number; opacity: number }>>([]);
 
   useEffect(() => {
     // Create floating energy particles
@@ -359,7 +359,7 @@ const RedBullCareerHub = () => {
               }}
               transition={{ duration: 3, repeat: Infinity }}
             >
-              Ready to fuel your career as a{" "}
+              Ready to fuel your career as a&nbsp;
               <motion.span
                 className="bg-gradient-to-r from-red-400 via-yellow-400 to-red-400 bg-clip-text text-transparent"
                 animate={{
@@ -377,7 +377,7 @@ const RedBullCareerHub = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              Join our energy-driven team. We're seeking bold creators who push boundaries and think outside the can.
+              Join our energy-driven team. We&apos;re seeking bold creators who push boundaries and think outside the can.
             </motion.p>
           </div>
 

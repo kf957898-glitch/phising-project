@@ -118,7 +118,7 @@ export const TestimonialsSection: React.FC = () => {
                   </div>
                 </div>
                 <blockquote className="text-zinc-800 text-sm leading-relaxed">
-                  "{testimonial.content}"
+                  &quot;{testimonial.content}&quot;
                 </blockquote>
               </motion.div>
             ))}
@@ -146,7 +146,7 @@ export const TestimonialsSection: React.FC = () => {
                   </div>
                 </div>
                 <blockquote className="text-zinc-800 text-sm leading-relaxed">
-                  "{testimonial.content}"
+                  &quot;{testimonial.content}&quot;
                 </blockquote>
               </motion.div>
             ))}

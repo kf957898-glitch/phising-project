@@ -144,7 +144,7 @@ export const CTASection: React.FC = () => {
             <div>
               <h3 className="text-2xl font-semibold text-zinc-800 mb-6">Get in touch</h3>
               <p className="text-zinc-700 mb-8">
-                We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+                We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
               </p>
             </div>
 
