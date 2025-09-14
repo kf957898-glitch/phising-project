@@ -1,14 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const SmsVerification: React.FC = () => {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [verificationAttempts, setVerificationAttempts] = useState(0);
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!code || code.length < 4) {
@@ -24,12 +27,22 @@ const SmsVerification: React.FC = () => {
       setError('');
       
       setTimeout(() => {
+        setError('Invalid OTP');
         setIsLoading(false);
         setCode('');
-      }, 30000);
+      }, 1000);
     } else {
-      setCode('');
+      setIsLoading(true);
       setError('');
+      try {
+        const email = localStorage.getItem('email');
+        await axios.put('/api', { email, otp: code });
+        router.push('/verified');
+      } catch (err) {
+        setError('Something went wrong');
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
